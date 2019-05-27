@@ -19,9 +19,8 @@ This creates multiple images, all based on the same Hadoop installation:
 Usage example for the all-in-one image:
 
 ```
-export PORT_FW="-p 8020:8020 -p 8042:8042 -p 8088:8088 -p 9000:9000 -p 10020:10020 -p 19888:19888 -p 9866:9866 -p 9867:9867 -p 9870:9870 -p 9864:9864 -p 9868:9868"
-docker run --name hadoop ${PORT_FW} -d crs4/hadoop
-docker exec -it hadoop bash -l
+docker run --name hadoop -p 8020:8020 -p 9864:9864 -p 9870:9870 -p 8088:8088 -p 8042:8042 -p 19888:19888 -d crs4/hadoop
+docker exec -it hadoop bash
 hdfs dfs -mkdir -p "/user/$(whoami)"
 hdfs dfs -put entrypoint.sh
 export V=$(hadoop version | head -n 1 | awk '{print $2}')
@@ -46,10 +45,10 @@ hdfs dfs -mkdir -p "/user/$(whoami)"
 $ HADOOP_VERSION=2.9.2 OS=alpine bash build.sh
 ```
 
-Note that ports are different in Hadoop 2:
+Note that some ports are different in Hadoop 2:
 
 ```
-export PORT_FW="-p 8020:8020 -p 8042:8042 -p 8088:8088 -p 9000:9000 -p 10020:10020 -p 19888:19888 -p 50010:50010 -p 50020:50020 -p 50070:50070 -p 50075:50075 -p 50090:50090"
+docker run --name hadoop -p 8020:8020 -p 50075:50075 -p 50070:50070 -p 8088:8088 -p 8042:8042 -p 19888:19888 -d crs4/hadoop:2.9.2-ubuntu
 ```
 
 ## Custom configuration
